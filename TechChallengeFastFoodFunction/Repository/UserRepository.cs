@@ -49,6 +49,7 @@ public class UserRepository
                 }
                 catch (SqlException)
                 {
+                    throw;
                 }
             }
         }
@@ -82,6 +83,7 @@ public class UserRepository
                             {
                                 Name = reader["Name"].ToString(),
                                 Cpf = reader["Cpf"].ToString(),
+                                Role = "Customer"
                             };
                         }
                     }
@@ -121,7 +123,7 @@ public class UserRepository
                     }
                     catch (SqlException)
                     {
-                        return null;
+                        throw;
                     }
                 }
             }

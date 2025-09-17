@@ -36,7 +36,7 @@ public class LoginFunction
             else
                 (canLogin, user) = await loginManager.CanLoginByUserId(loginData.Email, loginData.Password);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             throw;
         }
