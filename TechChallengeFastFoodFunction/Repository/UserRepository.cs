@@ -13,7 +13,7 @@ public class UserRepository
         _connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
     }
 
-    public async Task<User> GetUserByUsernameAndPassAsync(string username)
+    public async Task<Employee> GetUserByUsernameAndPassAsync(string username)
     {
         if (string.IsNullOrEmpty(_connectionString))
         {
@@ -37,7 +37,7 @@ public class UserRepository
                         if (await reader.ReadAsync())
                         {
                             // Se encontrar o usuário, retorna o objeto User.
-                            return new User
+                            return new Employee
                             {
                                 Name = reader["Name"].ToString(),
                                 Password = reader["Password"].ToString(),
@@ -56,7 +56,7 @@ public class UserRepository
         return null;
     }
 
-    public async Task<User> GetUserByCpfAsync(string cpf)
+    public async Task<Employee> GetUserByCpfAsync(string cpf)
     {
         if (string.IsNullOrEmpty(_connectionString))
         {
@@ -79,7 +79,7 @@ public class UserRepository
                     {
                         if (await reader.ReadAsync())
                         {
-                            return new User
+                            return new Employee
                             {
                                 Name = reader["Name"].ToString(),
                                 Cpf = reader["Cpf"].ToString(),
@@ -97,7 +97,7 @@ public class UserRepository
         return null;
     }
 
-    public async Task<User> CreateUserAsync(User user)
+    public async Task<Employee> CreateEmployeeAsync(Employee employee)
     {
         if (string.IsNullOrEmpty(_connectionString))
         {
@@ -108,18 +108,59 @@ public class UserRepository
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var sql = "INSERT INTO Users (Username, Password, Role, Cpf) OUTPUT INSERTED.Id VALUES (@Username, @Password, @Role, @Cpf)";
+                var sql = "INSERT INTO Employees (Name, Surname, Email, Password, Role, Cpf, BirthDay) OUTPUT INSERTED.Id VALUES (@Name, @Surname, @Email, @Password, @Role, @Cpf, @BirthDay)";
                 using (var command = new SqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@Username", user.Name);
-                    command.Parameters.AddWithValue("@Password", user.Password);
-                    command.Parameters.AddWithValue("@Role", string.IsNullOrWhiteSpace(user.Role) ? "" : user.Role);
-                    command.Parameters.AddWithValue("@Cpf", string.IsNullOrWhiteSpace(user.Cpf) ? "" : user.Password);
+                    command.Parameters.AddWithValue("@Name", employee.Name);
+                    command.Parameters.AddWithValue("@Surname", employee.Surname);
+                    command.Parameters.AddWithValue("@Email", employee.Email);
+                    command.Parameters.AddWithValue("@Password", employee.Password);
+                    command.Parameters.AddWithValue("@Role", employee.Role);
+                    command.Parameters.AddWithValue("@Cpf", employee.Cpf);
+                    command.Parameters.AddWithValue("@BirthDay", employee.BirthDay);
                     try
                     {
                         await connection.OpenAsync();
-                        user.Id = (int)await command.ExecuteScalarAsync();
-                        return user;
+                        employee.Id = (int)await command.ExecuteScalarAsync();
+                        return employee;
+                    }
+                    catch (SqlException)
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<Customer> CreateCustomerAsync(Customer customer)
+    {
+        if (string.IsNullOrEmpty(_connectionString))
+        {
+            return null;
+        }
+
+        try
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sql = "INSERT INTO Customers (Name, Surname,email, Cpf, BirthDay) OUTPUT INSERTED.Id VALUES (@Name, @Surname, @Email, @Cpf, @BirthDay)";
+                using (var command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", customer.Name);
+                    command.Parameters.AddWithValue("@Surname", customer.Surname);
+                    command.Parameters.AddWithValue("@Email", customer.Email);
+                    command.Parameters.AddWithValue("@Cpf", customer.Cpf);
+                    command.Parameters.AddWithValue("@BirthDay", customer.BirthDay);
+                    try
+                    {
+                        await connection.OpenAsync();
+                        customer.Id = (int)await command.ExecuteScalarAsync();
+                        return customer;
                     }
                     catch (SqlException)
                     {

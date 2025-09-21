@@ -15,18 +15,14 @@ public class LoginFunction
         string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
         var loginData = JsonSerializer.Deserialize<LoginRequest>(requestBody);
-        if (loginData == null)
+        
+        if (!ValidateRequestModel(loginData))
         {
             return new BadRequestObjectResult("Por favor, passe um JSON válido no corpo da requisição.");
         }
 
-        if ((string.IsNullOrEmpty(loginData.Email) || string.IsNullOrEmpty(loginData.Password)) && string.IsNullOrEmpty(loginData.Cpf))
-        {
-            return new BadRequestObjectResult("Username e password são campos obrigatórios.");
-        }
-
         var loginManager = new LoginManager();
-        User? user = new();
+        Employee? user = new();
         bool canLogin;
 
         try
@@ -50,5 +46,14 @@ public class LoginFunction
 
             return new UnauthorizedResult();
         }
+    }
+
+    private bool ValidateRequestModel(LoginRequest loginData)
+    {
+        if (loginData == null || (string.IsNullOrEmpty(loginData.Email) || string.IsNullOrEmpty(loginData.Password)) && string.IsNullOrEmpty(loginData.Cpf))
+        {
+            return false;
+        }
+        return true;
     }
 }
