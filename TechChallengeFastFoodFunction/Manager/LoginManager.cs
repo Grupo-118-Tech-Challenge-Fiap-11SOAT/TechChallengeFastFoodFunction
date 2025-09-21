@@ -11,7 +11,7 @@ namespace TechChallengeFastFoodFunction.Manager
 {
     public class LoginManager
     {
-        public OkObjectResult GenerateJwtToken(User user)
+        public OkObjectResult GenerateJwtToken(Employee user)
         {
             var claims = new List<Claim>
             {
@@ -41,7 +41,7 @@ namespace TechChallengeFastFoodFunction.Manager
             return new OkObjectResult(new { token });
         }
 
-        public async Task<(bool, User?)> CanLoginByUserId(string username, string password)
+        public async Task<(bool, Employee?)> CanLoginByUserId(string username, string password)
         {
             var userRepository = new UserRepository();
 
@@ -59,7 +59,7 @@ namespace TechChallengeFastFoodFunction.Manager
             return (user != null, user);
         }
 
-        public async Task<(bool, User?)> CanLoginByCpf(string cpf)
+        public async Task<(bool, Employee?)> CanLoginByCpf(string cpf)
         {
             var userRepository = new UserRepository();
 
@@ -80,21 +80,47 @@ namespace TechChallengeFastFoodFunction.Manager
             return computedHash == storedHash;
         }
 
-        public async Task<bool> CreateUser(string username, string password, string cpf = "")
+        public async Task<bool> CreateEmployee(string name, string surname, string email, string password, string role, string cpf, DateOnly birthDay)
         {
             try
             {
                 var userRepository = new UserRepository();
 
-                var user = new User
+                var employee = new Employee
                 {
-                    Name = username,
+                    Name = name,
+                    Surname = surname,
+                    Email = email,
                     Password = CreatePasswordHash(password),
                     Cpf = cpf,
-                    Role = "User"
+                    Role = role,
+                    BirthDay = birthDay
                 };
 
-                return await userRepository.CreateUserAsync(user) != null;
+                return await userRepository.CreateEmployeeAsync(employee) != null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> CreateCustomer(string cpf, string name, string surname, string email, DateOnly birthDay)
+        {
+            try
+            {
+                var userRepository = new UserRepository();
+
+                var customer = new Customer
+                {
+                    Name = name,
+                    Surname = surname,
+                    Cpf = cpf,
+                    Email = email,
+                    BirthDay = birthDay
+                };
+
+                return await userRepository.CreateCustomerAsync(customer) != null;
             }
             catch (Exception)
             {

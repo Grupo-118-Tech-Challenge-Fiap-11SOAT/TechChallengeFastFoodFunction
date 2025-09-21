@@ -7,12 +7,12 @@ using TechChallengeFastFoodFunction.Model;
 
 namespace TechChallengeFastFoodFunction;
 
-public class CreateUserFunction
+public class CreateEmployeeFunction
 {
-    private readonly ILogger<CreateUserFunction> _log;
-    public CreateUserFunction(ILogger<CreateUserFunction> log) => _log = log;
+    private readonly ILogger<CreateEmployeeFunction> _log;
+    public CreateEmployeeFunction(ILogger<CreateEmployeeFunction> log) => _log = log;
 
-    [Function("CreateUserFunction")]
+    [Function("CreateEmployeeFunction")]
     public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest req)
     {
         try
@@ -20,13 +20,13 @@ public class CreateUserFunction
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
             var loginData = JsonSerializer.Deserialize<LoginRequest>(requestBody);
-            if (loginData == null || (string.IsNullOrEmpty(loginData.Email) && string.IsNullOrEmpty(loginData.Password) && string.IsNullOrEmpty(loginData.Cpf)) || string.IsNullOrEmpty(loginData.Email) || string.IsNullOrEmpty(loginData.Password))
+            if (!ValidateRequestModel(loginData))
             {
                 return new BadRequestObjectResult("Por favor, passe um JSON válido no corpo da requisição.");
             }
 
             var loginManager = new Manager.LoginManager();
-            if (await loginManager.CreateUser(loginData.Email, loginData.Password, loginData.Cpf))
+            if (await loginManager.CreateEmployee(loginData.Name,loginData.Surname,loginData.Email, loginData.Password, loginData.Role,loginData.Cpf, loginData.BirthDay))
                 return new CreatedResult();
             else
                 return new BadRequestObjectResult("Erro ao criar usuário.");
@@ -36,5 +36,14 @@ public class CreateUserFunction
             _log.LogError(e.Message, "Erro ao processar a requisição.");
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
+    }
+
+    private bool ValidateRequestModel(LoginRequest loginData)
+    {
+        if (loginData == null || string.IsNullOrEmpty(loginData.Name) || string.IsNullOrEmpty(loginData.Surname) || string.IsNullOrEmpty(loginData.Email) || string.IsNullOrEmpty(loginData.Password) || string.IsNullOrEmpty(loginData.Role) || string.IsNullOrEmpty(loginData.Cpf) || loginData.BirthDay == default)
+        {
+            return false;
+        }
+        return true;
     }
 }
