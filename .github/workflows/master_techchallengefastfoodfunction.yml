@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'src/TechChallengeFastFoodFunction' # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '8.0.0' # set this to the dotnet version to use
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'TechChallengeFastFoodFunction' # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '8.0.x' # set this to the dotnet version to use
 
 jobs:
   build-and-deploy:
@@ -39,9 +39,7 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C3F11786D1034CF3A50BA793BF9AB5E9 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A00B6A925C044786A605B38D3C52E50A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5863F5C365E9480AB9817CA3683E3D31 }}
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
