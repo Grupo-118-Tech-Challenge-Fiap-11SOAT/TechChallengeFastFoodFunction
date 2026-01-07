@@ -177,4 +177,4 @@ This project is part of an educational challenge and follows the institution's g
 
 ## Team
 
-Grupo 118 - Tech Challenge FIAP 11SOAT
+Grupo 118 - Tech Challenge FIAP - 11SOAT
