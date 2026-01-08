@@ -2,7 +2,6 @@
 
 namespace TechChallengeFastFoodFunction.Model
 {
-    [ExcludeFromCodeCoverage]
     public class LoginRequest
     {
         public string Name { get; set; }

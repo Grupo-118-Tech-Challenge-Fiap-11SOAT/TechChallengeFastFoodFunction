@@ -3,7 +3,6 @@
 namespace TechChallengeFastFoodFunction.Model
 
 {
-    [ExcludeFromCodeCoverage]
     public class Customer
     {
         public int Id { get; set; }

@@ -2,7 +2,6 @@
 
 namespace TechChallengeFastFoodFunction.Model
 {
-    [ExcludeFromCodeCoverage]
     public class CustomerRequest
     {
         public string Cpf { get; set; }

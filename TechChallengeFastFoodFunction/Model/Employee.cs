@@ -2,7 +2,6 @@
 
 namespace TechChallengeFastFoodFunction.Model
 {
-    [ExcludeFromCodeCoverage]
     public class Employee
     {
         public int Id { get; set; }
