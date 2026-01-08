@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -128,6 +129,7 @@ namespace TechChallengeFastFoodFunction.Manager
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public string CreatePasswordHash(string password)
         {
             var secretKey = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SecurityKey"));
