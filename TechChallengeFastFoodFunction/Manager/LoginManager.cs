@@ -86,46 +86,32 @@ namespace TechChallengeFastFoodFunction.Manager
 
         public async Task<bool> CreateEmployee(string name, string surname, string email, string password, string role, string cpf, DateOnly birthDay)
         {
-            try
+            var employee = new Employee
             {
-                var employee = new Employee
-                {
-                    Name = name,
-                    Surname = surname,
-                    Email = email,
-                    Password = CreatePasswordHash(password),
-                    Cpf = cpf,
-                    Role = role,
-                    BirthDay = birthDay
-                };
+                Name = name,
+                Surname = surname,
+                Email = email,
+                Password = CreatePasswordHash(password),
+                Cpf = cpf,
+                Role = role,
+                BirthDay = birthDay
+            };
 
-                return await _userRepository.CreateEmployeeAsync(employee) != null;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return await _userRepository.CreateEmployeeAsync(employee) != null;
         }
 
         public async Task<bool> CreateCustomer(string cpf, string name, string surname, string email, DateOnly birthDay)
         {
-            try
+            var customer = new Customer
             {
-                var customer = new Customer
-                {
-                    Name = name,
-                    Surname = surname,
-                    Cpf = cpf,
-                    Email = email,
-                    BirthDay = birthDay
-                };
+                Name = name,
+                Surname = surname,
+                Cpf = cpf,
+                Email = email,
+                BirthDay = birthDay
+            };
 
-                return await _userRepository.CreateCustomerAsync(customer) != null;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return await _userRepository.CreateCustomerAsync(customer) != null;
         }
         
         public string CreatePasswordHash(string password)
