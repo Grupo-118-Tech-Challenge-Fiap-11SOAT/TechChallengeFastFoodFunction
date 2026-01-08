@@ -1,6 +1,0 @@
-<Solution>
-  <Folder Name="/Tests/">
-    <Project Path="Tests/TechChallengeFastFoodFunction.Tests/TechChallengeFastFoodFunction.Tests.csproj" />
-  </Folder>
-  <Project Path="TechChallengeFastFoodFunction/TechChallengeFastFoodFunction.csproj" />
-</Solution>
