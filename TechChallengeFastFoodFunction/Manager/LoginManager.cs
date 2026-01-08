@@ -128,8 +128,7 @@ namespace TechChallengeFastFoodFunction.Manager
                 throw;
             }
         }
-
-        [ExcludeFromCodeCoverage]
+        
         public string CreatePasswordHash(string password)
         {
             var secretKey = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SecurityKey"));

@@ -1,5 +1,9 @@
-﻿namespace TechChallengeFastFoodFunction.Model
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace TechChallengeFastFoodFunction.Model
+
 {
+    [ExcludeFromCodeCoverage]
     public class Customer
     {
         public int Id { get; set; }

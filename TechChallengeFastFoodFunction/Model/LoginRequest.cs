@@ -1,5 +1,8 @@
-﻿namespace TechChallengeFastFoodFunction.Model
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace TechChallengeFastFoodFunction.Model
 {
+    [ExcludeFromCodeCoverage]
     public class LoginRequest
     {
         public string Name { get; set; }
