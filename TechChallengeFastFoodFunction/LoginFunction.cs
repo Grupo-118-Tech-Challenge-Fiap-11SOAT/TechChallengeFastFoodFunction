@@ -4,6 +4,7 @@ using Microsoft.Azure.Functions.Worker;
 using System.Text.Json;
 using TechChallengeFastFoodFunction.Manager;
 using TechChallengeFastFoodFunction.Model;
+using TechChallengeFastFoodFunction.Repository;
 
 namespace TechChallengeFastFoodFunction;
 
@@ -18,24 +19,17 @@ public class LoginFunction
         
         if (!ValidateRequestModel(loginData))
         {
-            return new BadRequestObjectResult("Por favor, passe um JSON válido no corpo da requisição.");
+            return new BadRequestObjectResult("Por favor, passe um JSON vï¿½lido no corpo da requisiï¿½ï¿½o.");
         }
 
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         Employee? user = new();
         bool canLogin;
 
-        try
-        {
-            if (!string.IsNullOrEmpty(loginData.Cpf))
-                (canLogin, user) = await loginManager.CanLoginByCpf(loginData.Cpf);
-            else
-                (canLogin, user) = await loginManager.CanLoginByUserId(loginData.Email, loginData.Password);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        if (!string.IsNullOrEmpty(loginData.Cpf))
+            (canLogin, user) = await loginManager.CanLoginByCpf(loginData.Cpf);
+        else
+            (canLogin, user) = await loginManager.CanLoginByUserId(loginData.Email, loginData.Password);
 
         if (canLogin && user != null)
         {

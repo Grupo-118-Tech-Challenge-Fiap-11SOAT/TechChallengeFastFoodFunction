@@ -1,4 +1,6 @@
-﻿namespace TechChallengeFastFoodFunction.Model
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace TechChallengeFastFoodFunction.Model
 {
     public class CustomerRequest
     {

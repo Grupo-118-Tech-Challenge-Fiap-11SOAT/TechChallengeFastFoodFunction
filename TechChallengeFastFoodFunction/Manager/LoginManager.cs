@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,6 +12,13 @@ namespace TechChallengeFastFoodFunction.Manager
 {
     public class LoginManager
     {
+        private readonly IUserRepository _userRepository;
+
+        public LoginManager(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+        
         public OkObjectResult GenerateJwtToken(Employee user)
         {
             var claims = new List<Claim>
@@ -43,9 +51,7 @@ namespace TechChallengeFastFoodFunction.Manager
 
         public async Task<(bool, Employee?)> CanLoginByUserId(string username, string password)
         {
-            var userRepository = new UserRepository();
-
-            var user = await userRepository.GetUserByUsernameAndPassAsync(username);
+            var user = await _userRepository.GetUserByUsernameAndPassAsync(username);
             if (user == null)
             {
                 return (false, user);
@@ -61,9 +67,7 @@ namespace TechChallengeFastFoodFunction.Manager
 
         public async Task<(bool, Employee?)> CanLoginByCpf(string cpf)
         {
-            var userRepository = new UserRepository();
-
-            var user = await userRepository.GetUserByCpfAsync(cpf);
+            var user = await _userRepository.GetUserByCpfAsync(cpf);
             if (user == null)
             {
                 return (false, user);
@@ -82,52 +86,34 @@ namespace TechChallengeFastFoodFunction.Manager
 
         public async Task<bool> CreateEmployee(string name, string surname, string email, string password, string role, string cpf, DateOnly birthDay)
         {
-            try
+            var employee = new Employee
             {
-                var userRepository = new UserRepository();
+                Name = name,
+                Surname = surname,
+                Email = email,
+                Password = CreatePasswordHash(password),
+                Cpf = cpf,
+                Role = role,
+                BirthDay = birthDay
+            };
 
-                var employee = new Employee
-                {
-                    Name = name,
-                    Surname = surname,
-                    Email = email,
-                    Password = CreatePasswordHash(password),
-                    Cpf = cpf,
-                    Role = role,
-                    BirthDay = birthDay
-                };
-
-                return await userRepository.CreateEmployeeAsync(employee) != null;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return await _userRepository.CreateEmployeeAsync(employee) != null;
         }
 
         public async Task<bool> CreateCustomer(string cpf, string name, string surname, string email, DateOnly birthDay)
         {
-            try
+            var customer = new Customer
             {
-                var userRepository = new UserRepository();
+                Name = name,
+                Surname = surname,
+                Cpf = cpf,
+                Email = email,
+                BirthDay = birthDay
+            };
 
-                var customer = new Customer
-                {
-                    Name = name,
-                    Surname = surname,
-                    Cpf = cpf,
-                    Email = email,
-                    BirthDay = birthDay
-                };
-
-                return await userRepository.CreateCustomerAsync(customer) != null;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return await _userRepository.CreateCustomerAsync(customer) != null;
         }
-
+        
         public string CreatePasswordHash(string password)
         {
             var secretKey = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SecurityKey"));
