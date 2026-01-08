@@ -17,7 +17,7 @@ env:
   SONAR_PROJECT_KEY: 'techchallengefastfoodfunction'
   SONAR_ORGANIZATION: 'grupo-118-tech-challenge-fiap-11soat'
   SONAR_HOST_URL: 'https://sonarcloud.io'
-  DEFAULT_BRANCH: 'main'
+  DEFAULT_BRANCH: 'master'
   BUILD_CONFIGURATION: 'Release'
 
 jobs:
@@ -114,7 +114,7 @@ jobs:
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
       - name: SonarCloud End
-        continue-on-error:  ${{ github.ref != 'refs/heads/main' && (github.event_name != 'pull_request' || github.base_ref != 'main') }}
+        continue-on-error:  ${{ github.ref != 'refs/heads/master' && (github.event_name != 'pull_request' || github.base_ref != 'master') }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"      
