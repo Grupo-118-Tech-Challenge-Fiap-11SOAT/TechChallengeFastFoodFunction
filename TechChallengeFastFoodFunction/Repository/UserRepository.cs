@@ -1,8 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Data.SqlClient;
 using TechChallengeFastFoodFunction.Model;
 
 namespace TechChallengeFastFoodFunction.Repository;
 
+[ExcludeFromCodeCoverage]
 public class UserRepository : IUserRepository
 {
     private readonly string _connectionString;
