@@ -26,17 +26,10 @@ public class LoginFunction
         Employee? user = new();
         bool canLogin;
 
-        try
-        {
-            if (!string.IsNullOrEmpty(loginData.Cpf))
-                (canLogin, user) = await loginManager.CanLoginByCpf(loginData.Cpf);
-            else
-                (canLogin, user) = await loginManager.CanLoginByUserId(loginData.Email, loginData.Password);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        if (!string.IsNullOrEmpty(loginData.Cpf))
+            (canLogin, user) = await loginManager.CanLoginByCpf(loginData.Cpf);
+        else
+            (canLogin, user) = await loginManager.CanLoginByUserId(loginData.Email, loginData.Password);
 
         if (canLogin && user != null)
         {
