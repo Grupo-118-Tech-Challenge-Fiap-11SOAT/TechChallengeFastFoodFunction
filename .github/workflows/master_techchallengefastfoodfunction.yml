@@ -12,7 +12,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'TechChallengeFastFoodFunction' # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '8.0.x' # set this to the dotnet version to use
+  DOTNET_VERSION: '9.0.x' # set this to the dotnet version to use
   SOLUTION_PATH: 'TechChallengeFastFoodFunction.slnx'
   SONAR_PROJECT_KEY: 'techchallengefastfoodfunction'
   SONAR_ORGANIZATION: 'grupo-118-tech-challenge-fiap-11soat'
