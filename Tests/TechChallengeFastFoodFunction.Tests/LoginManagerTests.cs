@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using TechChallengeFastFoodFunction.Manager;
 using TechChallengeFastFoodFunction.Model;
 using TechChallengeFastFoodFunction.Repository;
@@ -244,6 +245,289 @@ public class LoginManagerTests
         var token2 = okResult2.Value.GetType().GetProperty("token")?.GetValue(okResult2.Value) as string;
         
         Assert.NotEqual(token1, token2);
+    }
+
+    [Fact]
+    public async Task CanLoginByUserId_WithCorrectPassword_ReturnsTrue()
+    {
+        // Arrange
+        Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
+        
+        var mockRepository = new Mock<IUserRepository>();
+        var loginManager = new LoginManager(mockRepository.Object);
+        
+        var password = "SenhaSegura123";
+        var passwordHash = loginManager.CreatePasswordHash(password);
+        
+        var employee = new Employee
+        {
+            Id = 1,
+            Name = "Carlos",
+            Surname = "Oliveira",
+            Email = "carlos.oliveira@example.com",
+            Password = passwordHash,
+            Role = "Admin"
+        };
+        
+        mockRepository
+            .Setup(r => r.GetUserByUsernameAndPassAsync("carlos.oliveira@example.com"))
+            .ReturnsAsync(employee);
+        
+        // Act
+        var (canLogin, user) = await loginManager.CanLoginByUserId("carlos.oliveira@example.com", password);
+        
+        // Assert
+        Assert.True(canLogin);
+        Assert.NotNull(user);
+        Assert.Equal("Carlos", user.Name);
+        Assert.Equal("carlos.oliveira@example.com", user.Email);
+    }
+
+    [Fact]
+    public async Task CanLoginByUserId_WithIncorrectPassword_ReturnsFalse()
+    {
+        // Arrange
+        Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
+        
+        var mockRepository = new Mock<IUserRepository>();
+        var loginManager = new LoginManager(mockRepository.Object);
+        
+        var correctPassword = "SenhaSegura123";
+        var wrongPassword = "SenhaErrada456";
+        var passwordHash = loginManager.CreatePasswordHash(correctPassword);
+        
+        var employee = new Employee
+        {
+            Id = 2,
+            Name = "Fernanda",
+            Surname = "Almeida",
+            Email = "fernanda.almeida@example.com",
+            Password = passwordHash,
+            Role = "Manager"
+        };
+        
+        mockRepository
+            .Setup(r => r.GetUserByUsernameAndPassAsync("fernanda.almeida@example.com"))
+            .ReturnsAsync(employee);
+        
+        // Act
+        var (canLogin, user) = await loginManager.CanLoginByUserId("fernanda.almeida@example.com", wrongPassword);
+        
+        // Assert
+        Assert.False(canLogin);
+        Assert.NotNull(user);
+    }
+
+    [Fact]
+    public async Task CanLoginByUserId_WithUserNotFound_ReturnsFalse()
+    {
+        // Arrange
+        Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
+        
+        var mockRepository = new Mock<IUserRepository>();
+        mockRepository
+            .Setup(r => r.GetUserByUsernameAndPassAsync(It.IsAny<string>()))
+            .ReturnsAsync((Employee)null);
+        
+        var loginManager = new LoginManager(mockRepository.Object);
+        
+        // Act
+        var (canLogin, user) = await loginManager.CanLoginByUserId("usuario.inexistente@example.com", "qualquersenha");
+        
+        // Assert
+        Assert.False(canLogin);
+        Assert.Null(user);
+    }
+
+    [Fact]
+    public async Task CanLoginByUserId_WithEmptyPassword_ReturnsFalse()
+    {
+        // Arrange
+        Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
+        
+        var mockRepository = new Mock<IUserRepository>();
+        var loginManager = new LoginManager(mockRepository.Object);
+        
+        var correctPassword = "SenhaSegura123";
+        var emptyPassword = "";
+        var passwordHash = loginManager.CreatePasswordHash(correctPassword);
+        
+        var employee = new Employee
+        {
+            Id = 3,
+            Name = "Ricardo",
+            Surname = "Santos",
+            Email = "ricardo.santos@example.com",
+            Password = passwordHash,
+            Role = "User"
+        };
+        
+        mockRepository
+            .Setup(r => r.GetUserByUsernameAndPassAsync("ricardo.santos@example.com"))
+            .ReturnsAsync(employee);
+        
+        // Act
+        var (canLogin, user) = await loginManager.CanLoginByUserId("ricardo.santos@example.com", emptyPassword);
+        
+        // Assert
+        Assert.False(canLogin);
+        Assert.NotNull(user);
+    }
+
+    [Fact]
+    public async Task CanLoginByCpf_WithExistingCpf_ReturnsTrue()
+    {
+        // Arrange
+        var mockRepository = new Mock<IUserRepository>();
+        
+        var employee = new Employee
+        {
+            Id = 4,
+            Name = "Juliana",
+            Surname = "Pereira",
+            Cpf = "12345678901",
+            Role = "Customer"
+        };
+        
+        mockRepository
+            .Setup(r => r.GetUserByCpfAsync("12345678901"))
+            .ReturnsAsync(employee);
+        
+        var loginManager = new LoginManager(mockRepository.Object);
+        
+        // Act
+        var (canLogin, user) = await loginManager.CanLoginByCpf("12345678901");
+        
+        // Assert
+        Assert.True(canLogin);
+        Assert.NotNull(user);
+        Assert.Equal("Juliana", user.Name);
+        Assert.Equal("12345678901", user.Cpf);
+    }
+
+    [Fact]
+    public async Task CreateEmployee_WithValidData_ReturnsTrue()
+    {
+        // Arrange
+        Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
+        
+        var mockRepository = new Mock<IUserRepository>();
+        var expectedEmployee = new Employee
+        {
+            Id = 5,
+            Name = "Marcelo",
+            Surname = "Souza",
+            Email = "marcelo.souza@example.com",
+            Role = "Admin",
+            Cpf = "98765432100",
+            BirthDay = new DateOnly(1985, 5, 15)
+        };
+        
+        mockRepository
+            .Setup(r => r.CreateEmployeeAsync(It.IsAny<Employee>()))
+            .ReturnsAsync(expectedEmployee);
+        
+        var loginManager = new LoginManager(mockRepository.Object);
+        
+        // Act
+        var result = await loginManager.CreateEmployee(
+            "Marcelo",
+            "Souza",
+            "marcelo.souza@example.com",
+            "senha123",
+            "Admin",
+            "98765432100",
+            new DateOnly(1985, 5, 15)
+        );
+        
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task CreateEmployee_WithRepositoryFailure_ReturnsFalse()
+    {
+        // Arrange
+        Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
+        
+        var mockRepository = new Mock<IUserRepository>();
+        mockRepository
+            .Setup(r => r.CreateEmployeeAsync(It.IsAny<Employee>()))
+            .ReturnsAsync((Employee)null);
+        
+        var loginManager = new LoginManager(mockRepository.Object);
+        
+        // Act
+        var result = await loginManager.CreateEmployee(
+            "Patricia",
+            "Lima",
+            "patricia.lima@example.com",
+            "senha456",
+            "User",
+            "11122233344",
+            new DateOnly(1992, 8, 22)
+        );
+        
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public async Task CreateCustomer_WithValidData_ReturnsTrue()
+    {
+        // Arrange
+        var mockRepository = new Mock<IUserRepository>();
+        var expectedCustomer = new Customer
+        {
+            Id = 6,
+            Name = "Amanda",
+            Surname = "Costa",
+            Cpf = "55566677788",
+            Email = "amanda.costa@example.com",
+            BirthDay = new DateOnly(1995, 3, 10)
+        };
+        
+        mockRepository
+            .Setup(r => r.CreateCustomerAsync(It.IsAny<Customer>()))
+            .ReturnsAsync(expectedCustomer);
+        
+        var loginManager = new LoginManager(mockRepository.Object);
+        
+        // Act
+        var result = await loginManager.CreateCustomer(
+            "55566677788",
+            "Amanda",
+            "Costa",
+            "amanda.costa@example.com",
+            new DateOnly(1995, 3, 10)
+        );
+        
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task CreateCustomer_WithRepositoryFailure_ReturnsFalse()
+    {
+        // Arrange
+        var mockRepository = new Mock<IUserRepository>();
+        mockRepository
+            .Setup(r => r.CreateCustomerAsync(It.IsAny<Customer>()))
+            .ReturnsAsync((Customer)null);
+        
+        var loginManager = new LoginManager(mockRepository.Object);
+        
+        // Act
+        var result = await loginManager.CreateCustomer(
+            "99988877766",
+            "Roberto",
+            "Mendes",
+            "roberto.mendes@example.com",
+            new DateOnly(1988, 11, 5)
+        );
+        
+        // Assert
+        Assert.False(result);
     }
 }
 

@@ -3,7 +3,7 @@ using TechChallengeFastFoodFunction.Model;
 
 namespace TechChallengeFastFoodFunction.Repository;
 
-public class UserRepository
+public class UserRepository : IUserRepository
 {
     private readonly string _connectionString;
 

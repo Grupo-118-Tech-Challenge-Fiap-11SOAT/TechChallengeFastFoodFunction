@@ -12,9 +12,9 @@ namespace TechChallengeFastFoodFunction.Manager
 {
     public class LoginManager
     {
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public LoginManager(UserRepository userRepository)
+        public LoginManager(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
