@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFoodFunction.Manager;
 using TechChallengeFastFoodFunction.Model;
+using TechChallengeFastFoodFunction.Repository;
 
 namespace TechChallengeFastFoodFunction.Tests;
 
@@ -15,7 +16,7 @@ public class LoginManagerTests
         Environment.SetEnvironmentVariable("JwtIssuer", "TestIssuer");
         Environment.SetEnvironmentVariable("JwtAudience", "TestAudience");
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         var employee = new Employee
         {
             Id = 1,
@@ -51,7 +52,7 @@ public class LoginManagerTests
         Environment.SetEnvironmentVariable("JwtIssuer", "TestIssuer");
         Environment.SetEnvironmentVariable("JwtAudience", "TestAudience");
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         var employee = new Employee
         {
             Id = 1,
@@ -73,7 +74,7 @@ public class LoginManagerTests
         // Arrange
         Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         var password = "MySecurePassword123";
         
         // Act
@@ -91,7 +92,7 @@ public class LoginManagerTests
         // Arrange
         Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         var password = "MySecurePassword123";
         
         // Act
@@ -108,7 +109,7 @@ public class LoginManagerTests
         // Arrange
         Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         var password1 = "Password1";
         var password2 = "Password2";
         
@@ -126,7 +127,7 @@ public class LoginManagerTests
         // Arrange
         Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         var password = "";
         
         // Act
@@ -144,7 +145,7 @@ public class LoginManagerTests
         Environment.SetEnvironmentVariable("SqlConnectionString", null);
         Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         
         // Act
         var (canLogin, user) = await loginManager.CanLoginByUserId("silvana.ramos@example.com", "password");
@@ -160,7 +161,7 @@ public class LoginManagerTests
         // Arrange
         Environment.SetEnvironmentVariable("SqlConnectionString", null);
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         
         // Act
         var (canLogin, user) = await loginManager.CanLoginByCpf("00000000000");
@@ -177,7 +178,7 @@ public class LoginManagerTests
         Environment.SetEnvironmentVariable("SqlConnectionString", null);
         Environment.SetEnvironmentVariable("SecurityKey", "MyVerySecureSecretKeyForHashing123!");
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         
         // Act
         var result = await loginManager.CreateEmployee(
@@ -200,7 +201,7 @@ public class LoginManagerTests
         // Arrange
         Environment.SetEnvironmentVariable("SqlConnectionString", null);
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         
         // Act
         var result = await loginManager.CreateCustomer(
@@ -224,7 +225,7 @@ public class LoginManagerTests
         Environment.SetEnvironmentVariable("JwtIssuer", "TestIssuer");
         Environment.SetEnvironmentVariable("JwtAudience", "TestAudience");
         
-        var loginManager = new LoginManager();
+        var loginManager = new LoginManager(new UserRepository());
         var employee1 = new Employee { Id = 1, Name = "Gustavo Lima", Role = "Admin" };
         var employee2 = new Employee { Id = 2, Name = "Tatiana Costa", Role = "User" };
         

@@ -12,6 +12,13 @@ namespace TechChallengeFastFoodFunction.Manager
 {
     public class LoginManager
     {
+        private readonly UserRepository _userRepository;
+
+        public LoginManager(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+        
         public OkObjectResult GenerateJwtToken(Employee user)
         {
             var claims = new List<Claim>
@@ -44,9 +51,7 @@ namespace TechChallengeFastFoodFunction.Manager
 
         public async Task<(bool, Employee?)> CanLoginByUserId(string username, string password)
         {
-            var userRepository = new UserRepository();
-
-            var user = await userRepository.GetUserByUsernameAndPassAsync(username);
+            var user = await _userRepository.GetUserByUsernameAndPassAsync(username);
             if (user == null)
             {
                 return (false, user);
@@ -62,9 +67,7 @@ namespace TechChallengeFastFoodFunction.Manager
 
         public async Task<(bool, Employee?)> CanLoginByCpf(string cpf)
         {
-            var userRepository = new UserRepository();
-
-            var user = await userRepository.GetUserByCpfAsync(cpf);
+            var user = await _userRepository.GetUserByCpfAsync(cpf);
             if (user == null)
             {
                 return (false, user);
@@ -85,8 +88,6 @@ namespace TechChallengeFastFoodFunction.Manager
         {
             try
             {
-                var userRepository = new UserRepository();
-
                 var employee = new Employee
                 {
                     Name = name,
@@ -98,7 +99,7 @@ namespace TechChallengeFastFoodFunction.Manager
                     BirthDay = birthDay
                 };
 
-                return await userRepository.CreateEmployeeAsync(employee) != null;
+                return await _userRepository.CreateEmployeeAsync(employee) != null;
             }
             catch (Exception)
             {
@@ -110,8 +111,6 @@ namespace TechChallengeFastFoodFunction.Manager
         {
             try
             {
-                var userRepository = new UserRepository();
-
                 var customer = new Customer
                 {
                     Name = name,
@@ -121,7 +120,7 @@ namespace TechChallengeFastFoodFunction.Manager
                     BirthDay = birthDay
                 };
 
-                return await userRepository.CreateCustomerAsync(customer) != null;
+                return await _userRepository.CreateCustomerAsync(customer) != null;
             }
             catch (Exception)
             {

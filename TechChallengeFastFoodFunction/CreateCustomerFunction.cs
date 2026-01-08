@@ -4,6 +4,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using TechChallengeFastFoodFunction.Model;
+using TechChallengeFastFoodFunction.Repository;
 
 namespace TechChallengeFastFoodFunction;
 
@@ -26,18 +27,18 @@ public class CreateCustomerFunction
             var loginData = JsonSerializer.Deserialize<CustomerRequest>(requestBody);
             if (!ValidateRequestModel(loginData))
             {
-                return new BadRequestObjectResult("Por favor, passe um JSON válido no corpo da requisição.");
+                return new BadRequestObjectResult("Por favor, passe um JSON vï¿½lido no corpo da requisiï¿½ï¿½o.");
             }
 
-            var loginManager = new Manager.LoginManager();
+            var loginManager = new Manager.LoginManager(new UserRepository());
             if (await loginManager.CreateCustomer(loginData.Cpf, loginData.Name, loginData.Surname, loginData.Email, loginData.BirthDay))
                 return new CreatedResult();
             else
-                return new BadRequestObjectResult("Erro ao criar usuário.");
+                return new BadRequestObjectResult("Erro ao criar usuï¿½rio.");
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message, "Erro ao processar a requisição.");
+            _logger.LogError(e.Message, "Erro ao processar a requisiï¿½ï¿½o.");
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
     }
