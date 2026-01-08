@@ -19,7 +19,7 @@ public class LoginManagerTests
         var employee = new Employee
         {
             Id = 1,
-            Name = "John Doe",
+            Name = "André Santos",
             Role = "Admin"
         };
         
@@ -55,7 +55,7 @@ public class LoginManagerTests
         var employee = new Employee
         {
             Id = 1,
-            Name = "Jane Smith",
+            Name = "Isabela Ferreira",
             Role = "Manager"
         };
         
@@ -147,7 +147,7 @@ public class LoginManagerTests
         var loginManager = new LoginManager();
         
         // Act
-        var (canLogin, user) = await loginManager.CanLoginByUserId("nonexisting@example.com", "password");
+        var (canLogin, user) = await loginManager.CanLoginByUserId("silvana.ramos@example.com", "password");
         
         // Assert
         Assert.False(canLogin);
@@ -181,9 +181,9 @@ public class LoginManagerTests
         
         // Act
         var result = await loginManager.CreateEmployee(
-            "John",
-            "Doe",
-            "john.doe@example.com",
+            "Leonardo",
+            "Martins",
+            "leonardo.martins@example.com",
             "password123",
             "Admin",
             "12345678900",
@@ -205,9 +205,9 @@ public class LoginManagerTests
         // Act
         var result = await loginManager.CreateCustomer(
             "12345678900",
-            "John",
-            "Doe",
-            "john.doe@example.com",
+            "Bianca",
+            "Rodrigues",
+            "bianca.rodrigues@example.com",
             new DateOnly(1990, 1, 1)
         );
         
@@ -225,8 +225,8 @@ public class LoginManagerTests
         Environment.SetEnvironmentVariable("JwtAudience", "TestAudience");
         
         var loginManager = new LoginManager();
-        var employee1 = new Employee { Id = 1, Name = "Employee1", Role = "Admin" };
-        var employee2 = new Employee { Id = 2, Name = "Employee2", Role = "User" };
+        var employee1 = new Employee { Id = 1, Name = "Gustavo Lima", Role = "Admin" };
+        var employee2 = new Employee { Id = 2, Name = "Tatiana Costa", Role = "User" };
         
         // Act
         var result1 = loginManager.GenerateJwtToken(employee1);

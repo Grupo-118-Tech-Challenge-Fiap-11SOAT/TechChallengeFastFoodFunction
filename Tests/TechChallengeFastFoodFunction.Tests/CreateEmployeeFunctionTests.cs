@@ -24,9 +24,9 @@ public class CreateEmployeeFunctionTests
         var function = new CreateEmployeeFunction(_mockLogger.Object);
         var loginRequest = new LoginRequest
         {
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "Carlos",
+            Surname = "Mendes",
+            Email = "carlos.mendes@example.com",
             Password = "SecurePassword123",
             Role = "Admin",
             Cpf = "12345678900",
@@ -72,8 +72,8 @@ public class CreateEmployeeFunctionTests
         var function = new CreateEmployeeFunction(_mockLogger.Object);
         var loginRequest = new LoginRequest
         {
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Surname = "Ferreira",
+            Email = "lucia.ferreira@example.com",
             Password = "SecurePassword123",
             Role = "Admin",
             Cpf = "12345678900",
@@ -100,8 +100,8 @@ public class CreateEmployeeFunctionTests
         var function = new CreateEmployeeFunction(_mockLogger.Object);
         var loginRequest = new LoginRequest
         {
-            Name = "John",
-            Email = "john.doe@example.com",
+            Name = "Fernando",
+            Email = "fernando.gomes@example.com",
             Password = "SecurePassword123",
             Role = "Admin",
             Cpf = "12345678900",
@@ -128,8 +128,8 @@ public class CreateEmployeeFunctionTests
         var function = new CreateEmployeeFunction(_mockLogger.Object);
         var loginRequest = new LoginRequest
         {
-            Name = "John",
-            Surname = "Doe",
+            Name = "Patricia",
+            Surname = "Souza",
             Password = "SecurePassword123",
             Role = "Admin",
             Cpf = "12345678900",
@@ -156,9 +156,9 @@ public class CreateEmployeeFunctionTests
         var function = new CreateEmployeeFunction(_mockLogger.Object);
         var loginRequest = new LoginRequest
         {
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "Thiago",
+            Surname = "Ribeiro",
+            Email = "thiago.ribeiro@example.com",
             Role = "Admin",
             Cpf = "12345678900",
             BirthDay = new DateOnly(1990, 1, 1)
@@ -184,9 +184,9 @@ public class CreateEmployeeFunctionTests
         var function = new CreateEmployeeFunction(_mockLogger.Object);
         var loginRequest = new LoginRequest
         {
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "Amanda",
+            Surname = "Lima",
+            Email = "amanda.lima@example.com",
             Password = "SecurePassword123",
             Cpf = "12345678900",
             BirthDay = new DateOnly(1990, 1, 1)
@@ -212,9 +212,9 @@ public class CreateEmployeeFunctionTests
         var function = new CreateEmployeeFunction(_mockLogger.Object);
         var loginRequest = new LoginRequest
         {
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "Rodrigo",
+            Surname = "Azevedo",
+            Email = "rodrigo.azevedo@example.com",
             Password = "SecurePassword123",
             Role = "Admin",
             BirthDay = new DateOnly(1990, 1, 1)
@@ -240,9 +240,9 @@ public class CreateEmployeeFunctionTests
         var function = new CreateEmployeeFunction(_mockLogger.Object);
         var loginRequest = new LoginRequest
         {
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "Camila",
+            Surname = "Barbosa",
+            Email = "camila.barbosa@example.com",
             Password = "SecurePassword123",
             Role = "Admin",
             Cpf = "12345678900",
@@ -270,8 +270,8 @@ public class CreateEmployeeFunctionTests
         var loginRequest = new LoginRequest
         {
             Name = "",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Surname = "Andrade",
+            Email = "felipe.andrade@example.com",
             Password = "SecurePassword123",
             Role = "Admin",
             Cpf = "12345678900",
@@ -298,9 +298,9 @@ public class CreateEmployeeFunctionTests
         var function = new CreateEmployeeFunction(_mockLogger.Object);
         var loginRequest = new LoginRequest
         {
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "Marcos",
+            Surname = "Pereira",
+            Email = "marcos.pereira@example.com",
             Password = "",
             Role = "Admin",
             Cpf = "12345678900",

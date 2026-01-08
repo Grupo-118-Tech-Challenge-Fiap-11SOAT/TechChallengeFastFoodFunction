@@ -25,9 +25,9 @@ public class CreateCustomerFunctionTests
         var customerRequest = new CustomerRequest
         {
             Cpf = "12345678900",
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "João",
+            Surname = "Silva",
+            Email = "joao.silva@example.com",
             BirthDay = new DateOnly(1990, 1, 1)
         };
         
@@ -70,9 +70,9 @@ public class CreateCustomerFunctionTests
         var function = new CreateCustomerFunction(_mockLogger.Object);
         var customerRequest = new CustomerRequest
         {
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "Maria",
+            Surname = "Santos",
+            Email = "maria.santos@example.com",
             BirthDay = new DateOnly(1990, 1, 1)
         };
         
@@ -100,8 +100,8 @@ public class CreateCustomerFunctionTests
         var customerRequest = new CustomerRequest
         {
             Cpf = "12345678900",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Surname = "Oliveira",
+            Email = "pedro.oliveira@example.com",
             BirthDay = new DateOnly(1990, 1, 1)
         };
         
@@ -126,8 +126,8 @@ public class CreateCustomerFunctionTests
         var customerRequest = new CustomerRequest
         {
             Cpf = "12345678900",
-            Name = "John",
-            Email = "john.doe@example.com",
+            Name = "Ana",
+            Email = "ana.costa@example.com",
             BirthDay = new DateOnly(1990, 1, 1)
         };
         
@@ -152,8 +152,8 @@ public class CreateCustomerFunctionTests
         var customerRequest = new CustomerRequest
         {
             Cpf = "12345678900",
-            Name = "John",
-            Surname = "Doe",
+            Name = "Rafael",
+            Surname = "Lima",
             BirthDay = new DateOnly(1990, 1, 1)
         };
         
@@ -178,9 +178,9 @@ public class CreateCustomerFunctionTests
         var customerRequest = new CustomerRequest
         {
             Cpf = "12345678900",
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "Juliana",
+            Surname = "Rodrigues",
+            Email = "juliana.rodrigues@example.com",
             BirthDay = default
         };
         
@@ -205,9 +205,9 @@ public class CreateCustomerFunctionTests
         var customerRequest = new CustomerRequest
         {
             Cpf = "",
-            Name = "John",
-            Surname = "Doe",
-            Email = "john.doe@example.com",
+            Name = "Bruno",
+            Surname = "Almeida",
+            Email = "bruno.almeida@example.com",
             BirthDay = new DateOnly(1990, 1, 1)
         };
         

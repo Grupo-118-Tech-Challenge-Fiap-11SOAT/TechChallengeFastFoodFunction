@@ -40,7 +40,7 @@ public class LoginFunctionTests
         var loginFunction = new LoginFunction();
         var loginRequest = new LoginRequest
         {
-            Email = "test@example.com",
+            Email = "renata.silva@example.com",
             Password = "password123"
         };
         
@@ -102,8 +102,8 @@ public class LoginFunctionTests
         var loginFunction = new LoginFunction();
         var loginRequest = new LoginRequest
         {
-            Name = "Test",
-            Surname = "User"
+            Name = "Diego",
+            Surname = "Cardoso"
         };
         
         var json = JsonSerializer.Serialize(loginRequest);
@@ -126,7 +126,7 @@ public class LoginFunctionTests
         var loginFunction = new LoginFunction();
         var loginRequest = new LoginRequest
         {
-            Email = "teste@example.com"
+            Email = "marina.costa@example.com"
         };
         
         var json = JsonSerializer.Serialize(loginRequest);
