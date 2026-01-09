@@ -2,6 +2,10 @@
 
 An Azure Functions-based authentication and user management system for a fast food application, built with .NET 8 and C#.
 
+## Code Coverage
+
+![Code Coverage](Code%20Coverage%20-%20Lambda.png)
+
 ## Overview
 
 This project implements serverless Azure Functions to handle user authentication, employee management, and customer registration for a fast food ordering system. It provides JWT-based authentication with role-based access control and secure password hashing.
